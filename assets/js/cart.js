@@ -1,7 +1,7 @@
 let carrinho = [];
 let total = 0;
 
-function adicionarAoCarrinho(nome, preco, imagem) {
+  function adicionarAoCarrinho(nome, preco, imagem) {
     const itemIndex = carrinho.findIndex(item => item.nome === nome);
     if (itemIndex !== -1) {
       carrinho[itemIndex].quantidade++;
@@ -10,6 +10,27 @@ function adicionarAoCarrinho(nome, preco, imagem) {
     }
     total += preco;
     atualizarCarrinho();
+
+    // Crie uma notificação
+    const notification = document.createElement('div');
+    notification.textContent = 'Item adicionado ao carrinho!';
+    notification.style.position = 'fixed';
+    notification.style.top = '10px';
+    notification.style.right = '10px';
+    notification.style.backgroundColor = 'hsl(31, 100%, 70%)';
+    notification.style.color = 'white';
+    notification.style.padding = '10px';
+    notification.style.borderRadius = '10px';
+    notification.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+    notification.style.zIndex = '1000';
+
+    // Adicione a notificação ao corpo da página
+    document.body.appendChild(notification);
+
+    // Remova a notificação após 2 segundos
+    setTimeout(() => {
+      notification.remove();
+    }, 2000);
   }
   
   function aumentarQuantidade(index) {
@@ -74,15 +95,23 @@ function adicionarAoCarrinho(nome, preco, imagem) {
     });
 
     const cartPricesDiv = document.getElementById('cart__prices');
-    if (cartPricesDiv) {
+  if (cartPricesDiv) {
     cartPricesDiv.innerHTML = `
-        <p>Quantidade de itens: ${carrinho.reduce((acc, item) => acc + item.quantidade, 0)}</p>
-        <p>Preço total: R$ ${total.toFixed(2)}</p>
+      <p>Quantidade: ${carrinho.reduce((acc, item) => acc + item.quantidade, 0)}</p>
+      <p>Total: R$ ${total.toFixed(2)}</p>
     `;
-    } else {
-    console.error('Elemento cart_prices não encontrado');
-    }
+  } else if (carrinho.length > 0) {
+    const cart = document.getElementById('cart');
+    const cartPricesHtml = `
+      <div class="cart__prices" id="cart__prices">
+        <p>Quantidade: ${carrinho.reduce((acc, item) => acc + item.quantidade, 0)}</p>
+        <p>Total: R$ ${total.toFixed(2)}</p>
+      </div>
+    `;
+    cart.insertAdjacentHTML('beforeend', cartPricesHtml);
   }
+}
+
 function finalizarCompra() {
   alert("Compra finalizada!");
   carrinho = [];

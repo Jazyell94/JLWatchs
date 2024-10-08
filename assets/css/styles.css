@@ -938,9 +938,16 @@ body.dark-theme {
 }
 
 .cart__prices {
-  margin-top: 6rem;
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+  color: var(--first-color);
+}
+.cart__prices p {
+  margin-bottom: 1rem;
 }
 
 .cart__prices-item, 
